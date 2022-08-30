@@ -290,7 +290,7 @@ class Separation(sb.Brain):
         #  self.train_loss_buffer = []
         self.train_loss_buffer = {}
         self.valid_stats = {}
-        self.load_pretrain_checkpoint()
+        # self.load_pretrain_checkpoint()
 
     def on_stage_start(self, stage, epoch=None):
         super().on_stage_start(stage, epoch)
@@ -736,10 +736,10 @@ if __name__ == "__main__":
     #      hparams["pretrained_separator"].load_collected()
 
     # load pretrained embedder
-    run_on_main(hparams["pretrainer"].collect_files)
-    hparams["pretrainer"].load_collected()
-    if isinstance(hparams["Embedder"], ECAPA_TDNN):
-        hparams["Embedder"].eval()
+    # run_on_main(hparams["pretrainer"].collect_files)
+    # hparams["pretrainer"].load_collected()
+    # if isinstance(hparams["Embedder"], ECAPA_TDNN):
+    #     hparams["Embedder"].eval()
 
     # Brain class initialization
     separator = Separation(
