@@ -18,7 +18,7 @@ __set_cuda_seed: !apply:torch.cuda.manual_seed_all [!ref <seed>]
 # e.g. '/yourpath/wsj0-mix/2speakers'
 # end with 2speakers for wsj0-2mix or 3speakers for wsj0-3mix
 # data_folder: '/mnt/data/Speech/librispeech_tse'
-data_folder: '/mnt/data/wsj0.8k'
+data_folder: '/mnt/data/wsj/wsj0/'
 
 # base_folder_dm: '/mnt/nvme/Speech/librispeech/train-clean-360/train-clean-360/'
 # base_folder_dm_ext: 'flac'
@@ -51,7 +51,7 @@ skip_prep: False
 
 
 # Experiment params
-auto_mix_prec: True # Set it to True for mixed precision
+auto_mix_prec: False # Set it to True for mixed precision
 test_only: False
 num_spks: 2 # set to 3 for wsj0-3mix
 progressbar: True
@@ -61,7 +61,7 @@ sample_rate: 8000
 # Training parameters
 N_epochs: 200
 batch_size: 1
-lr: 0.000075
+lr: 0.00015
 clip_grad_norm: 5
 loss_upper_lim: 999999  # this is the upper limit for an acceptable loss
 # if True, the training sequences are cut to a specified length
@@ -224,14 +224,14 @@ optimizer: !name:torch.optim.Adam
 
 loss_lambdas:
     si-snr: 1.
-    triplet: 0.05
+    # triplet: 0.0
 
 train_loss:
     si-snr: !new:losses.MultiSrcNegSDR
         sdr_type: sisdr
         first_channel_only: False
-    triplet: !new:torch.nn.TripletMarginLoss
-        margin: 1.0
+    # triplet: !new:torch.nn.TripletMarginLoss
+    #     margin: 1.0
 
 valid_loss: 
     si-snr: !new:losses.MultiSrcNegSDR
@@ -244,7 +244,7 @@ lr_scheduler: !new:speechbrain.nnet.schedulers.ReduceLROnPlateau
     lr_min: 0.0000001
     factor: 0.5
     patience: 2
-    dont_halve_until_epoch: 65
+    dont_halve_until_epoch: 85
 
 epoch_counter: !new:speechbrain.utils.epoch_loop.EpochCounter
     limit: !ref <N_epochs>
